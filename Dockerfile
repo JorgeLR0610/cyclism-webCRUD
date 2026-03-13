@@ -1,11 +1,14 @@
+# Build stage
 # noble stands for Noble Numbat (Ubuntu 24.04)
+FROM eclipse-temurin:21-jdk-noble as build
+# Copies all files from the repo into docker's temp filesystem
+COPY . .
+RUN chmod +x mvnw
+# Generat the jar
+RUN ./mvnw clean package -DskipTests 
+
+# Execution stage
 FROM eclipse-temurin:21-jdk-noble
-
-# Temp var (build argument) that points to the .jar
-ARG JAR_FILE=target/*.jar
-
-# Copies the .jar into the container as app.jar
-COPY ${JAR_FILE} app.jar
-
+COPY --from=build /target/*.jar app.jar
 # This'll be executed once the container starts (basically java -jar app.jar)
 ENTRYPOINT [ "java", "-jar", "app.jar" ]
