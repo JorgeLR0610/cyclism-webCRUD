@@ -1,6 +1,6 @@
 # Build stage
 # noble stands for Noble Numbat (Ubuntu 24.04)
-FROM eclipse-temurin:21-jdk-noble as build
+FROM eclipse-temurin:21-jdk-noble AS build
 # Copies all files from the repo into docker's temp filesystem
 COPY . .
 RUN chmod +x mvnw
